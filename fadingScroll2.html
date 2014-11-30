@@ -29,9 +29,14 @@
 		$('[id^="box"]').each(function () { 		// if the id contains a/t with box
 													// ^, a bit operator that returns true if the item contains its value
 			if (($(this).offset().top - $(window).scrollTop()) < 100) {
-				$(this).stop().fadeTo(100,0.1);
+				$(this).stop().fadeTo(100,0.1).css('background-color', 'orange');
+			}  
+
+			else if (($(this).offset().top - $(window).scrollTop()) > 500) {
+				$(this).stop().fadeTo(100,.5).css('background-color', 'orange');
+
 			} else {
-				$(this).stop().fadeTo('slow', 1);
+				$(this).stop().fadeTo('slow', 1).css('background-color', 'blue');
 			}
 		});
 	});
