@@ -5,25 +5,31 @@
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<style>
-		#box1, #box2, #box3, #box4, #box5, #box6 {
+		.box  {
 		    width: 100px;
 		    height: 100px;
 		    background: orange;
 		    margin:100px auto;
 		}
-		#box6 {
+		#box12 {
 		    margin-bottom:600px;
 		}
 	</style>
 
 </head>
 	<body>
-		<div id="box1"></div>
-		<div id="box2"></div>
-		<div id="box3"></div>
-		<div id="box4"></div>
-		<div id="box5"></div>
-		<div id="box6"></div>
+		<div id="box1" class="box"></div>
+		<div id="box2" class="box"></div>
+		<div id="box3" class="box"></div>
+		<div id="box4" class="box"></div>
+		<div id="box5" class="box"></div>
+		<div id="box6" class="box"></div>
+		<div id="box7" class="box"></div>
+		<div id="box8" class="box"></div>
+		<div id="box9" class="box"></div>
+		<div id="box10" class="box"></div>
+		<div id="box11" class="box"></div>
+		<div id="box12" class="box"></div>
 	<script type="text/javascript">
 	$(window).scroll(function() {
 		$('[id^="box"]').each(function () { 		// if the id contains a/t with box
@@ -33,10 +39,10 @@
 			}  
 
 			else if (($(this).offset().top - $(window).scrollTop()) > 500) {
-				$(this).stop().fadeTo(100,.5).css('background-color', 'orange');
+				$(this).stop().fadeTo('fast',.5).css('background-color', 'orange');
 
 			} else {
-				$(this).stop().fadeTo('slow', 1).css('background-color', 'blue');
+				$(this).stop().fadeTo('fast', 1).css('background-color', 'blue');
 			}
 		});
 	});

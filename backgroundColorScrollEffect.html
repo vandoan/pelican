@@ -1,0 +1,25 @@
+<html>
+<!-- http://jsfiddle.net/JdbhV/6/ -->
+
+<head>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<style>
+		body { height: 2000px; background-color: #808080; }
+			}
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(document).scroll(function() {
+				var alpha = Math.min(0.5 + 0.4 * $(this).	scrollTop() /210, 0.9);
+				var channel = Math.round(alpha * 255);
+				$("body").css('background-color', 'rgb(' + channel + ',' + channel + ',' + channel +')');
+			});
+		});
+	</script>
+</head>
+
+<body>
+</body>
+
+</html>
