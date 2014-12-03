@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <meta charset=utf-8 />
+        <title>JS Bin</title>
+    
+        <style>
+    /**
+*  Direction-Aware Hover Effect with CSS3 Transform and jQuery
+*  AUTHOR: Jozef Butko
+*  URL: www.jozefbutko.com
+*
+*  CREDITS:
+*  Direction Aware effect: http://tympanus.net/codrops/2012/04/09/direction-aware-hover-effect-with-css3-and-jquery/
+*  Improved version of Direction Aware jQuery plugin: http://appyourbrain.com/direction-aware-hover-with-jquery-cross-browser-compatible/
+*  Office Icons pack: https://www.iconfinder.com/iconsets/officeicons
+*  Dellipack Icons pack: https://www.iconfinder.com/iconsets/dellipack
+*  Linecons Icons Pack: https://www.iconfinder.com/iconsets/linecons-free-vector-icons-pack
+*  Images: http://unsplash.com/
+*  Font-Awesome icons: http://fontawesome.io/icons/
+*
+**/
+ body {
+    width: 97%;
+    margin: auto;
+    background: #222;
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/* made all images fluid */
+img {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+.full-size {
+    width: 100%;
+}
+/* hover effect */
+ .hover-wrapper {
+    -webkit-transition: all 0.15s ease-out;
+    -moz-transition: all 0.15s ease-out;
+    -o-transition: all 0.15s ease-out;
+    -ms-transition: all 0.15s ease-out;
+    transition: all 0.15s ease-out;
+    margin-bottom: 5%;
+    /* without this the link would be collapsed and won't be clickable */
+    position: relative;
+    border: 1px solid #444;
+    overflow: hidden;
+}
+/* Flicker bug fix (hardware acceleration). More info here: http://davidwalsh.name/translate3d */
+.accelerate {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+/* 1st version of hover bg */
+.full-size:hover {
+    z-index: initial;
+    box-shadow: 0 0 100px 50px rgba(0, 0, 0, 0.5) inset;
+}
+/* 2nd second version of hover bg */
+ .hover-wrapper-left:hover {
+    background: rgba(0, 0, 0, 0.8);
+    z-index: initial;
+}
+/* 3rd version of hover bg */
+ .hover-wrapper-right {
+    position: absolute;
+    top: -100%;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    opacity: 0; filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    /* IE fallback */
+    -webkit-transition: all 0.4s ease-out;
+    -moz-transition: all 0.4s ease-out;
+    -o-transition: all 0.4s ease-out;
+    -ms-transition: all 0.4s ease-out;
+    transition: all 0.4s ease-out;
+}
+.hover-wrapper:hover .hover-wrapper-right {
+    background: rgba(0, 0, 0, 0.5);
+    z-index: initial;
+    top: 0;
+    opacity: 1;
+    filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    /* IE fallback */
+}
+.hover-wrapper img {
+    z-index: -1;
+    /* position image behing black hover area */
+    vertical-align: bottom;
+    /* this fixes problem with ugly gap below the image*/
+}
+.icon {
+    display: inline-block;
+    position: absolute;
+    top:50%;
+    left:50%;
+    width: auto;
+    height: auto;
+    z-index: 100 !important;
+}
+/* animate opacity from 0 to 100% */
+ .full-size__magnifyingGlass {
+    opacity: 0;
+    /*     margin-left: -38px;
+    margin-top: -38px; */
+    /* this is fallback in case you will not use jQuery icon positioning fix */
+    background: #ddd;
+    padding: 14px;
+    border-radius: 50%;
+}
+.hover-wrapper:hover .full-size__magnifyingGlass {
+    opacity: 1;
+    -webkit-transition: all 0.5s ease-in;
+    -moz-transition: all 0.5s ease-in;
+    -o-transition: all 0.5s ease-in;
+    -ms-transition: all 0.5s ease-in;
+    transition: all 0.5s ease-in;
+}
+/* scale the icon from 0 to 100% */
+ .full-size__magnifyingGlass--second {
+    margin-left: -24px;
+    margin-top: -24px;
+    left:50%;
+    width: auto;
+    height: auto;
+    z-index: 100 !important;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -ms-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    -webkit-transform:scale(0);
+    /* width will be 110% as well as height */
+    -moz-transform:scale(0);
+    -ms-transform:scale(0);
+    -o-transform:scale(0);
+    transform:scale(0);
+}
+/* on image hover scale the icon to 100% size with animation */
+ .hover-wrapper:hover .full-size__magnifyingGlass--second {
+    /*transform*/
+    -webkit-transform:scale(1, 1);
+    /* width will be 110% as well as height */
+    -moz-transform:scale(1, 1);
+    -ms-transform:scale(1, 1);
+    -o-transform:scale(1, 1);
+    transform:scale(1, 1);
+}
+/* scale and rotate at the same time */
+ .full-size__magnifyingGlass--third {
+    /* vertical centering of the icon */
+    margin-top: -26px;
+    border-radius: 50%;
+    z-index: 100 !important;
+    /* place the icon on the top of the image */
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-in;
+    -o-transition: all 0.5s ease-in;
+    -ms-transition: all 0.5s ease-in;
+    transition: all 0.5s ease-in;
+    /*transform*/
+    -webkit-transform:rotate(360deg) scale(0);
+    /* rotate and scale before hover */
+    -moz-transform:rotate(360deg) scale(0);
+    -ms-transform:rotate(360deg) scale(0);
+    -o-transform:rotate(360deg) scale(0);
+    transform:rotate(360deg) scale(0);
+}
+.hover-wrapper:hover .full-size__magnifyingGlass--third {
+    /*transform*/
+    -webkit-transform:rotate(0deg) scale(1, 1);
+    /* rotate and scale to default state */
+    -moz-transform:rotate(0deg) scale(1, 1);
+    -ms-transform:rotate(0deg) scale(1, 1);
+    -o-transform:rotate(0deg) scale(1, 1);
+    transform:rotate(0deg) scale(1, 1);
+}
+/* magnifyingGlass__full-size-third: icon motion from the left to the right and vice versa */
+.left {
+    left: 0;
+}
+/* on hover move the left icon to the right */
+.hover-wrapper:hover .left {
+    left: 55%;
+}
+.right {
+    right: 0;
+}
+/* on hover move the right icon to the left */
+ .hover-wrapper:hover .right {
+    right: 55%;
+}
+/* FOURTH GROUP OF IMAGES */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.third {
+    width: 30%;
+    margin-right: 5%;
+    display: inline-block;
+    /* float elements side by side */
+}
+.last {
+    margin-right: 0;
+    /* clear margin-right on the last image */
+}
+.bg {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    z-index: 501;
+    left: 0;
+    top: -100%;
+}
+.third a {
+    z-index: 5001;
+    position: absolute;
+    display: block;
+    height:100%;
+    width: 100%;
+}
+.third i {
+    left: 50%;
+}
+/* font-awesome icons */
+i {
+    color: #444;
+    background: #ccc;
+    padding: 20px;
+    border-radius: 50%;
+    position: absolute;
+    display: inline-block;
+    z-index: 501;
+    font-size: 3.5em;
+    /*transform*/
+    -webkit-transform:scale(0);
+    /* width will be 110% as well as height */
+    -moz-transform:scale(0);
+    -ms-transform:scale(0);
+    -o-transform:scale(0);
+    transform:scale(0);
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -o-transition: all 0.2s ease-in;
+    -ms-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
+    top: 50%;
+}
+
+.hover-wrapper:hover i {
+    /*transform*/
+    -webkit-transform:scale(1, 1);
+    /* width will be 100% as well as height */
+    -moz-transform:scale(1, 1);
+    -ms-transform:scale(1, 1);
+    -o-transform:scale(1, 1);
+    transform:scale(1, 1);
+}
+.hover-wrapper:hover .bg {
+    top: 0;
+}
+
+.fa {
+    display: inline-block;
+}
+        </style>
+
+    </head>
+
+
+
+    <body>        <!-- GROUP OF IMAGES WITH DIRECTION AWARE EFFECT -->
+        <ul>
+            <li class='hover-wrapper accelerate third'>
+                <a href="#">
+                    <i class='fa fa-link center'></i>
+                </a><!-- icon -->
+                <img src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/unsplash_5259a34e5d050_1-1024x678.jpg" alt="Just a nice pic" />
+                <div class="bg"></div><!-- background div -->
+            </li><!-- this little neat comment fixes gap bug when you have display:inline-block elements side by side. Try to remove this comment and you will see what do I mean. Props to Chris @ css-tricks.com for the hack
+         --><li class='hover-wrapper accelerate third'>
+                <a href="#">
+                    <i class='fa fa-link center'></i>
+                </a><!-- icon -->
+                <img src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/unsplash_525f012329589_1-1024x678.jpg" alt="Just a nice pic" />
+                <div class="bg"></div><!-- background div -->
+            </li><!-- this little neat comment fixes gap bug when you have display:inline-block elements side by side. Try to remove this comment and you will see what do I mean. Props to Chris @ css-tricks.com for the hack
+        --><li class='hover-wrapper accelerate third last'>
+                <a href="#">
+                    <i class='fa fa-link center'></i>
+                </a><!-- icon -->
+                <img src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/unsplash_529f19acc1fdc_1-1024x682.jpg" alt="Just a nice pic" />
+                <div class="bg"></div><!-- background div -->
+            </li>
+        </ul>
+        <!-- GROUP OF IMAGES END -->
+
+        <!-- SECOND IMAGE -->
+        <div class="full-size">
+            <div class="hover-wrapper accelerate">
+                <div class="hover-wrapper-right"></div><!-- background div -->
+                <a href="#">
+                    <i class="full-size__magnifyingGlass--third left fa fa-picture-o"></i>
+                </a><!-- icon left -->
+                <a href="#">
+                    <i class="full-size__magnifyingGlass--third right fa fa-search"></i>
+                </a><!-- icon right -->
+                <img src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/unsplash_52cd96f512830_1-1024x682.jpg" alt="Just a pretty image" />
+            </div><!-- .hover-wrapper END -->
+        </div><!-- .full-size END -->
+        <!-- SECOND IMAGE END -->
+
+        <!-- THIRD IMAGE -->
+        <div class="full-size hover-wrapper">
+            <a href="#">
+                <img class="full-size__magnifyingGlass icon center" src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/Internet_link.png" alt="Just a pretty image" />
+            </a><!-- icon -->
+            <img src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/unsplash_52d65d1ebeeb2_1.jpg" alt="Just a pretty image" />
+        </div>
+        <!-- THIRD IMAGE END -->
+
+        <!-- FOURTH IMAGE -->
+        <div class="full-size">
+            <div class="hover-wrapper hover-wrapper-left">
+                <a href="#">
+                    <img class="full-size__magnifyingGlass--second icon" src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/plus.png" alt="Just a pretty image" />
+                </a><!-- icon -->
+                <img src="http://www.jozefbutko.com/wp-content/uploads/sites/5/2014/02/unsplash_52b5ec8515a34_1-1024x682.jpg" alt="Just a pretty image" />
+            </div><!-- .hover-wrapper .hover-wrapper-left END -->
+        </div><!-- .full-size END -->
+        <!-- FOURTH IMAGE END -->
+
+
+    </body>
+
+
+    <script>
+    $(function () {
+    
+    /* fire up direction-aware hover effect */
+    $(".hover-wrapper").each(function () {
+        $(this).hoverdir();
+    });
+
+    /* function for centering icon */
+    /* add 'center' class to any container */
+    $('.center').each(function () {
+               
+        var icon = $(this),
+            width = icon.outerWidth(true),
+            height = icon.outerHeight(true),
+            topMargin = height / 2,
+            leftMargin = width / 2;
+    
+        /* set negative margin-left and negative margin-top to center the icon */
+        icon.css({
+            marginLeft: -leftMargin + 'px',
+            marginTop: -topMargin + 'px'
+        });
+        
+    });
+    
+});
+    </script>
+</html>
