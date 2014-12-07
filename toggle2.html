@@ -1,0 +1,28 @@
+<html>
+<head>
+
+</head>
+
+<body>
+<a href="#" onclick="toggleIt('pup');">
+Push me
+</a>
+<div id='pup'>I'm a box</div>
+
+<script>
+
+function toggleIt(id) {
+	var pie = document.getElementById(id)
+
+	if (pie.style.display === "block") {
+		pie.style.display = "none";
+	} else {
+		pie.style.display = "block";
+	}
+}
+
+</script>
+</body>
+
+
+</html>
